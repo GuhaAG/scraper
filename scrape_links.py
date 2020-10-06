@@ -5,7 +5,6 @@ from tqdm import tqdm
 
 # define constants for the use case
 homePage = str("http://www.city-data.com/forum/search.php?searchid=40860988")
-fixedTagOnPage = str("atlanta")
 outputFilename = "output/post_content.json"
 
 # get all html content on the homepage
@@ -20,7 +19,7 @@ print("-----------------Gathering Threads--------------")
 # find all thread links from the home page
 for link in soup.findAll("a"):
     thread = str(link.get("href"))
-    if thread.find(fixedTagOnPage) != -1 or thread.find("page=") != -1:
+    if thread.find("atlanta") != -1 or thread.find("page=") != -1:
         homeThreadLinks.append("http://www.city-data.com/forum/"+thread)
 
 # add all links to pages from threads
@@ -31,9 +30,9 @@ for link in tqdm(homeThreadLinks):
     htmlOnPage = urllib.request.urlopen(link)
     soup = BeautifulSoup(htmlOnPage, "html.parser")
 
-    for link2 in soup.findAll("a[class^=smallfont]"):
+    for link2 in soup.findAll("a"):
         thread = str(link2.get("href"))
-        if thread.find(fixedTagOnPage) != -1:
+        if thread.find("forum/atlanta/") != -1 and thread.find("http") == -1:
             allThreadLinks.append("http://www.city-data.com/"+thread)
 
 
